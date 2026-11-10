@@ -1,0 +1,1 @@
+dias = ("lunes", "martes", "miércoles", "jueves", "viernes")

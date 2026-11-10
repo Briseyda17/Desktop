@@ -1,0 +1,514 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 90px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    color: #38313d;
+    background-color: #f5f0f6;
+    line-height: 1.5;
+}
+
+
+.encabezado {
+    background: linear-gradient(120deg, #b58bc2, #9567a5);
+    color: white;
+    padding: 22px 6%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.marca {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.logo {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.22);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    font-size: 28px;
+    font-weight: bold;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 27px;
+    letter-spacing: 1px;
+}
+
+header p {
+    margin: 3px 0 0;
+    font-size: 14px;
+}
+
+.etiqueta-laboratorio {
+    padding: 8px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+
+nav {
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 5%;
+    flex-wrap: wrap;
+    box-shadow: 0 3px 12px rgba(65, 42, 74, 0.08);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+nav a {
+    color: #66506e;
+    text-decoration: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+nav a:hover {
+    color: #754487;
+    background-color: #f1e5f4;
+}
+
+
+main {
+    width: 92%;
+    max-width: 1250px;
+    margin: 30px auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    align-items: start;
+}
+
+section {
+    background-color: rgba(255, 255, 255, 0.96);
+    padding: 25px;
+    border: 1px solid rgba(192, 157, 202, 0.25);
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(69, 45, 78, 0.08);
+    min-width: 0;
+    scroll-margin-top: 90px;
+}
+
+#inicio,
+#inventario,
+#historial {
+    grid-column: 1 / -1;
+}
+
+
+.titulo-seccion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+}
+
+.titulo-seccion h2 {
+    color: #714780;
+    font-size: 23px;
+    margin: 4px 0;
+}
+
+.titulo-seccion p {
+    color: #817887;
+    font-size: 14px;
+    margin: 4px 0 0;
+}
+
+.subtitulo {
+    color: #a077af;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+}
+
+.resumen {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.tarjeta {
+    padding: 20px;
+    background-color: #f4eaf7;
+    border: 1px solid #eadbed;
+    border-radius: 12px;
+    border-top: 4px solid #b58bc2;
+    min-width: 0;
+}
+
+.tarjeta .icono {
+    display: inline-flex;
+    width: 35px;
+    height: 35px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background-color: #e7d5ee;
+    color: #754487;
+    font-size: 21px;
+    font-weight: bold;
+}
+
+.tarjeta h3 {
+    color: #66506e;
+    font-size: 13px;
+    font-weight: normal;
+    margin: 14px 0 5px;
+}
+
+.tarjeta p {
+    color: #714780;
+    font-size: 30px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.tarjeta.disponible {
+    background-color: #edf7f0;
+    border-top-color: #77ad89;
+}
+
+.tarjeta.disponible .icono {
+    background-color: #d9eddf;
+    color: #34734a;
+}
+
+.tarjeta.disponible p {
+    color: #34734a;
+}
+
+.tarjeta.prestado {
+    background-color: #fff4e5;
+    border-top-color: #d6a05b;
+}
+
+.tarjeta.prestado .icono {
+    background-color: #f8e5c8;
+    color: #976323;
+}
+
+.tarjeta.prestado p {
+    color: #976323;
+}
+
+.tarjeta.mantenimiento {
+    background-color: #f0effb;
+    border-top-color: #9891ce;
+}
+
+.tarjeta.mantenimiento .icono {
+    background-color: #e1dff5;
+    color: #5e579c;
+}
+
+.tarjeta.mantenimiento p {
+    color: #5e579c;
+}
+
+
+.tabla-contenedor {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    font-size: 14px;
+}
+
+th {
+    background-color: #eee2f2;
+    color: #654174;
+    font-size: 13px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+th,
+td {
+    border-bottom: 1px solid #eee7f0;
+    padding: 14px 12px;
+    text-align: center;
+}
+
+td {
+    color: #504853;
+}
+
+tbody tr:hover {
+    background-color: #faf6fb;
+}
+
+.vacio {
+    color: #84798a;
+    padding: 25px;
+}
+
+
+.estado {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.estado-disponible {
+    background-color: #e1f3e6;
+    color: #287343;
+}
+
+.estado-prestado {
+    background-color: #fff0d9;
+    color: #96601c;
+}
+
+.estado-mantenimiento {
+    background-color: #eae8fa;
+    color: #5e5599;
+}
+
+
+form {
+    width: 100%;
+}
+
+label {
+    display: block;
+    margin: 16px 0 7px;
+    color: #5f4b67;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+input,
+select {
+    display: block;
+    width: 100%;
+    padding: 12px 13px;
+    background-color: #fff;
+    color: #38313d;
+    border: 1px solid #ded3e2;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #a77bb5;
+    box-shadow: 0 0 0 3px rgba(181, 139, 194, 0.17);
+}
+
+
+button,
+.enlace-boton {
+    display: inline-block;
+    padding: 11px 16px;
+    margin-top: 18px;
+    border: none;
+    border-radius: 8px;
+    background-color: #a67bb4;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+button:hover,
+.enlace-boton:hover {
+    background-color: #865995;
+    transform: translateY(-1px);
+}
+
+.enlace-boton {
+    margin-top: 0;
+}
+
+.acciones button {
+    margin: 3px;
+    padding: 8px 10px;
+    font-size: 12px;
+}
+
+.boton-editar {
+    background-color: #eee5f3;
+    color: #704781;
+}
+
+.boton-editar:hover {
+    background-color: #ddc9e7;
+}
+
+.boton-eliminar {
+    background-color: #fae7e9;
+    color: #a33d4b;
+}
+
+.boton-eliminar:hover {
+    background-color: #f2cbd0;
+}
+
+
+footer {
+    margin-top: 35px;
+    padding: 22px;
+    background-color: #73517e;
+    color: white;
+    text-align: center;
+    font-size: 13px;
+}
+
+footer p {
+    margin: 4px;
+}
+
+
+@media (max-width: 950px) {
+    .resumen {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    main {
+        width: 94%;
+    }
+
+    section {
+        padding: 20px;
+    }
+}
+
+
+@media (max-width: 700px) {
+    .encabezado {
+        padding: 18px 5%;
+    }
+
+    header h1 {
+        font-size: 22px;
+    }
+
+    .etiqueta-laboratorio {
+        margin-left: 65px;
+    }
+
+    nav {
+        position: static;
+        gap: 3px;
+        padding: 10px;
+    }
+
+    nav a {
+        padding: 9px 10px;
+        font-size: 12px;
+    }
+
+    main {
+        width: 94%;
+        grid-template-columns: 1fr;
+        margin: 20px auto;
+        gap: 16px;
+    }
+
+    #inicio,
+    #inventario,
+    #historial {
+        grid-column: auto;
+    }
+
+    section {
+        padding: 17px;
+        border-radius: 12px;
+    }
+
+    .resumen {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .tarjeta {
+        padding: 14px;
+    }
+
+    .tarjeta h3 {
+        font-size: 12px;
+    }
+
+    .tarjeta p {
+        font-size: 25px;
+    }
+
+    .titulo-seccion h2 {
+        font-size: 20px;
+    }
+
+    .titulo-seccion p {
+        font-size: 13px;
+    }
+
+    table {
+        min-width: 600px;
+    }
+
+    .tabla-contenedor {
+        overflow-x: auto;
+    }
+
+    .enlace-boton {
+        width: 100%;
+    }
+}
+
+@media (max-width: 380px) {
+    .resumen {
+        grid-template-columns: 1fr;
+    }
+
+    .logo {
+        width: 43px;
+        height: 43px;
+    }
+
+    header h1 {
+        font-size: 19px;
+    }
+}

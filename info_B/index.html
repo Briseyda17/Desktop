@@ -1,0 +1,414 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Gestión de Inventario</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body style="background-image: url('https://static.vecteezy.com/system/resources/previews/002/078/291/non_2x/crumpled-paper-background-free-photo.jpg');
+             background-size: cover;
+             background-position: center;
+             background-repeat: no-repeat;
+             background-attachment: fixed;">
+
+<header class="encabezado">
+    <div class="marca">
+        <div class="logo">N</div>
+        <div>
+            <h1>NEXUS</h1>
+            <p>Sistema de Gestión de Inventario</p>
+        </div>
+    </div>
+    <span class="etiqueta-laboratorio">Laboratorio Estudiantil</span>
+</header>
+
+<nav>
+    <a href="#inicio">Inicio</a>
+    <a href="#inventario">Inventario</a>
+    <a href="#agregar">Agregar artículo</a>
+    <a href="#prestamos">Préstamos</a>
+    <a href="#historial">Historial</a>
+</nav>
+
+<main>
+    <section id="inicio" class="bienvenida">
+        <div class="titulo-seccion">
+            <div>
+                <span class="subtitulo">PANEL PRINCIPAL</span>
+                <h2>Control de inventario</h2>
+                <p>Consulta y administra los materiales de tu laboratorio.</p>
+            </div>
+        </div>
+
+        <div class="resumen">
+            <div class="tarjeta">
+                <span class="icono">▦</span>
+                <h3>Total de artículos</h3>
+                <p id="total">0</p>
+            </div>
+
+            <div class="tarjeta disponible">
+                <span class="icono">✓</span>
+                <h3>Disponibles</h3>
+                <p id="disponibles">0</p>
+            </div>
+
+            <div class="tarjeta prestado">
+                <span class="icono">↗</span>
+                <h3>Prestados</h3>
+                <p id="prestados">0</p>
+            </div>
+
+            <div class="tarjeta mantenimiento">
+                <span class="icono">⚙</span>
+                <h3>En mantenimiento</h3>
+                <p id="mantenimiento">0</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="inventario" class="panel">
+        <div class="titulo-seccion">
+            <div>
+                <span class="subtitulo">GESTIÓN DE MATERIALES</span>
+                <h2>Inventario de artículos</h2>
+                <p>Consulta el estado actual de cada artículo.</p>
+            </div>
+            <a href="#agregar" class="enlace-boton">+ Agregar artículo</a>
+        </div>
+
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Artículo</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaInventario"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="agregar" class="panel">
+        <div class="titulo-seccion">
+            <div>
+                <span class="subtitulo">NUEVO REGISTRO</span>
+                <h2>Agregar artículo</h2>
+                <p>Ingresa los datos del material.</p>
+            </div>
+        </div>
+
+        <form id="formulario">
+            <label for="nombre">Nombre del artículo</label>
+            <input type="text" id="nombre"
+                   placeholder="Ej. Laptop, proyector..."
+                   required>
+
+            <label for="estado">Estado inicial</label>
+            <select id="estado">
+                <option value="Disponible">Disponible</option>
+                <option value="Prestado">Prestado</option>
+                <option value="En mantenimiento">En mantenimiento</option>
+            </select>
+
+            <button type="submit">Guardar artículo</button>
+        </form>
+    </section>
+
+    <section id="prestamos" class="panel">
+        <div class="titulo-seccion">
+            <div>
+                <span class="subtitulo">CONTROL DE SALIDAS</span>
+                <h2>Registrar préstamo</h2>
+                <p>Registra quién recibe el artículo y cuándo debe devolverlo.</p>
+            </div>
+        </div>
+
+        <form id="formPrestamo">
+            <label for="articuloPrestamo">Artículo disponible</label>
+            <select id="articuloPrestamo" required>
+                <option value="">Selecciona un artículo</option>
+            </select>
+
+            <label for="persona">Nombre de la persona</label>
+            <input type="text" id="persona"
+                   placeholder="Nombre de quien recibe"
+                   required>
+
+            <label for="fechaPrestamo">Fecha del préstamo</label>
+            <input type="date" id="fechaPrestamo" required>
+
+            <label for="fechaDevolucion">Fecha de devolución</label>
+            <input type="date" id="fechaDevolucion" required>
+
+            <button type="submit">Registrar préstamo</button>
+        </form>
+    </section>
+
+    <section id="historial" class="panel">
+        <div class="titulo-seccion">
+            <div>
+                <span class="subtitulo">REGISTROS</span>
+                <h2>Historial de préstamos</h2>
+                <p>Consulta los artículos prestados y sus fechas de devolución.</p>
+            </div>
+        </div>
+
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Artículo</th>
+                        <th>Persona</th>
+                        <th>Fecha de préstamo</th>
+                        <th>Fecha de devolución</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody id="historialTabla"></tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <p> Sistema de Gestión de Inventario</p>
+    <p>Laboratorio Estudiantil</p>
+</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+
+let articulos = JSON.parse(localStorage.getItem("articulos")) || [
+    { id: 1, nombre: "Laptop HP", estado: "Disponible" },
+    { id: 2, nombre: "Proyector", estado: "Prestado" },
+    { id: 3, nombre: "Microscopio", estado: "En mantenimiento" }
+];
+
+let prestamos = JSON.parse(localStorage.getItem("prestamos")) || [];
+
+function guardarDatos() {
+    localStorage.setItem("articulos", JSON.stringify(articulos));
+    localStorage.setItem("prestamos", JSON.stringify(prestamos));
+}
+
+function mostrar() {
+    $("tablaInventario").innerHTML = articulos.map((a, i) => `
+        <tr>
+            <td>${a.id}</td>
+            <td>${a.nombre}</td>
+            <td><span class="estado ${claseEstado(a.estado)}">${a.estado}</span></td>
+            <td class="acciones">
+                <button type="button" class="boton-editar"
+                    onclick="editar(${i})">Editar</button>
+                <button type="button" class="boton-eliminar"
+                    onclick="eliminar(${i})">Eliminar</button>
+            </td>
+        </tr>
+    `).join("");
+
+    $("total").textContent = articulos.length;
+    $("disponibles").textContent =
+        articulos.filter(a => a.estado === "Disponible").length;
+    $("prestados").textContent =
+        articulos.filter(a => a.estado === "Prestado").length;
+    $("mantenimiento").textContent =
+        articulos.filter(a => a.estado === "En mantenimiento").length;
+
+    const disponibles = articulos.filter(a => a.estado === "Disponible");
+
+    $("articuloPrestamo").innerHTML =
+        '<option value="">Selecciona un artículo</option>' +
+        disponibles.map(a =>
+            `<option value="${a.id}">${a.nombre}</option>`
+        ).join("");
+
+    mostrarPrestamos();
+    guardarDatos();
+}
+
+function claseEstado(estado) {
+    if (estado === "Disponible") return "estado-disponible";
+    if (estado === "Prestado") return "estado-prestado";
+    return "estado-mantenimiento";
+}
+
+$("formulario").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const nombre = $("nombre").value.trim();
+    const estado = $("estado").value;
+
+    if (!nombre) return;
+
+    const nuevoId = Math.max(0, ...articulos.map(a => Number(a.id))) + 1;
+
+    articulos.push({
+        id: nuevoId,
+        nombre: nombre,
+        estado: estado
+    });
+
+    mostrar();
+    this.reset();
+    alert("Artículo agregado correctamente.");
+});
+
+function eliminar(i) {
+    const articulo = articulos[i];
+
+    const tienePrestamoActivo = prestamos.some(p =>
+        Number(p.articuloId) === Number(articulo.id) && !p.devuelto
+    );
+
+    if (tienePrestamoActivo) {
+        alert("No puedes eliminar un artículo con un préstamo activo.");
+        return;
+    }
+
+    if (confirm("¿Deseas eliminar este artículo?")) {
+        articulos.splice(i, 1);
+        mostrar();
+    }
+}
+
+function editar(i) {
+    const articulo = articulos[i];
+
+    const nombreNuevo = prompt("Nombre del artículo:", articulo.nombre);
+    if (nombreNuevo === null || !nombreNuevo.trim()) return;
+
+    const estadoNuevo = prompt(
+        "Escribe el estado: Disponible, Prestado o En mantenimiento",
+        articulo.estado
+    );
+
+    if (estadoNuevo === null) return;
+
+    const estadosValidos = [
+        "Disponible", "Prestado", "En mantenimiento"
+    ];
+
+    const estadoCorrecto = estadosValidos.find(
+        e => e.toLowerCase() === estadoNuevo.trim().toLowerCase()
+    );
+
+    if (!estadoCorrecto) {
+        alert("Estado no válido.");
+        return;
+    }
+
+    articulo.nombre = nombreNuevo.trim();
+    articulo.estado = estadoCorrecto;
+
+    mostrar();
+}
+
+function mostrarPrestamos() {
+    $("historialTabla").innerHTML = prestamos.map(p => {
+        const fecha = p.fecha || "";
+        const devolucion = p.devolucion || "";
+        const devuelto = Boolean(p.devuelto);
+
+        return `
+            <tr>
+                <td>${p.articulo}</td>
+                <td>${p.persona}</td>
+                <td>${fecha}</td>
+                <td>${devolucion}</td>
+                <td>
+                    ${devuelto
+                        ? '<span class="estado estado-disponible">Devuelto</span>'
+                        : '<span class="estado estado-prestado">Pendiente</span>'}
+                    ${!devuelto && p.articuloId != null
+                        ? `<button type="button" class="boton-editar"
+                            onclick="marcarDevuelto(${p.id})">Marcar devuelto</button>`
+                        : ""}
+                </td>
+            </tr>
+        `;
+    }).join("");
+
+    if (prestamos.length === 0) {
+        $("historialTabla").innerHTML =
+            '<tr><td colspan="5" class="vacio">Aún no hay préstamos registrados.</td></tr>';
+    }
+}
+
+$("formPrestamo").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const articuloId = Number($("articuloPrestamo").value);
+    const persona = $("persona").value.trim();
+    const fecha = $("fechaPrestamo").value;
+    const devolucion = $("fechaDevolucion").value;
+
+    if (!articuloId || !persona || !fecha || !devolucion) {
+        alert("Completa todos los campos.");
+        return;
+    }
+
+    if (devolucion < fecha) {
+        alert("La fecha de devolución no puede ser anterior al préstamo.");
+        return;
+    }
+
+    const articulo = articulos.find(a => Number(a.id) === articuloId);
+
+    if (!articulo || articulo.estado !== "Disponible") {
+        alert("El artículo ya no está disponible para préstamo.");
+        mostrar();
+        return;
+    }
+
+    const nuevoPrestamo = {
+        id: Date.now(),
+        articuloId: articulo.id,
+        articulo: articulo.nombre,
+        persona: persona,
+        fecha: fecha,
+        devolucion: devolucion,
+        devuelto: false
+    };
+
+    prestamos.push(nuevoPrestamo);
+    articulo.estado = "Prestado";
+
+    mostrar();
+    this.reset();
+
+    alert("¡Préstamo registrado correctamente!");
+});
+
+function marcarDevuelto(id) {
+    const prestamo = prestamos.find(p => Number(p.id) === Number(id));
+    if (!prestamo || prestamo.devuelto) return;
+
+    if (!confirm("¿Confirmas que el artículo fue devuelto?")) return;
+
+    prestamo.devuelto = true;
+
+    const articulo = articulos.find(
+        a => Number(a.id) === Number(prestamo.articuloId)
+    );
+
+    if (articulo) {
+        articulo.estado = "Disponible";
+    }
+
+    mostrar();
+    alert("Devolución registrada correctamente.");
+}
+
+mostrar();
+</script>
+
+</body>
+</html>
